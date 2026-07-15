@@ -384,7 +384,12 @@ function LogEventDialog({
         tree[meta.freq],
         tree[meta.excluded] ?? [],
       );
-      const update: Record<string, string> = { [meta.next]: nextDate };
+      const update =
+        type === "fertilize"
+          ? { next_fert_date: nextDate }
+          : type === "prune"
+            ? { next_prune_date: nextDate }
+            : { next_repot_date: nextDate };
       const { error: e2 } = await supabase
         .from("trees")
         .update(update)
