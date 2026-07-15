@@ -128,8 +128,27 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="min-h-screen flex flex-col paper-grain">
+        <header className="border-b border-border/60">
+          <div className="mx-auto max-w-5xl px-5 py-5 flex items-center justify-between">
+            <Link to="/" className="flex items-baseline gap-2 group">
+              <span className="font-display text-2xl leading-none">Bonsai Journal</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                盆栽
+              </span>
+            </Link>
+            <nav className="text-sm text-muted-foreground">
+              <span className="hidden sm:inline">A quiet record of every tree</span>
+            </nav>
+          </div>
+        </header>
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <footer className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
+          Tend patiently. Water daily. Prune with intent.
+        </footer>
+      </div>
     </QueryClientProvider>
   );
 }
