@@ -76,22 +76,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1" },
+      { name: "theme-color", content: "#f5f1e8" },
+      { title: "Bonsai Journal — a tracker for your trees" },
+      {
+        name: "description",
+        content:
+          "A quiet home for your bonsai collection: track species, acquisition, care schedules, and progression photos.",
+      },
+      { property: "og:title", content: "Bonsai Journal" },
+      {
+        property: "og:description",
+        content: "Track care, fertilization, pruning and repotting for every bonsai in your collection.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +128,27 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="min-h-screen flex flex-col paper-grain">
+        <header className="border-b border-border/60">
+          <div className="mx-auto max-w-5xl px-5 py-5 flex items-center justify-between">
+            <Link to="/" className="flex items-baseline gap-2 group">
+              <span className="font-display text-2xl leading-none">Bonsai Journal</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                盆栽
+              </span>
+            </Link>
+            <nav className="text-sm text-muted-foreground">
+              <span className="hidden sm:inline">A quiet record of every tree</span>
+            </nav>
+          </div>
+        </header>
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <footer className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
+          Tend patiently. Water daily. Prune with intent.
+        </footer>
+      </div>
     </QueryClientProvider>
   );
 }
