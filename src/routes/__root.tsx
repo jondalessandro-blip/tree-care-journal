@@ -84,13 +84,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "A quiet home for your bonsai collection: track species, acquisition, care schedules, and progression photos.",
       },
-      { property: "og:title", content: "Bonsai Journal" },
+      { property: "og:title", content: "Bonsai Journal — a tracker for your trees" },
       {
         property: "og:description",
-        content: "Track care, fertilization, pruning and repotting for every bonsai in your collection.",
+        content: "A quiet home for your bonsai collection: track species, acquisition, care schedules, and progression photos.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Bonsai Journal — a tracker for your trees" },
+      { name: "twitter:description", content: "A quiet home for your bonsai collection: track species, acquisition, care schedules, and progression photos." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d26f65a1-7177-4e9e-aa11-6fff6ea521bf/id-preview-320db5b2--be7934ed-e63f-40d0-b01b-7f3766c14f90.lovable.app-1784134840347.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d26f65a1-7177-4e9e-aa11-6fff6ea521bf/id-preview-320db5b2--be7934ed-e63f-40d0-b01b-7f3766c14f90.lovable.app-1784134840347.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
