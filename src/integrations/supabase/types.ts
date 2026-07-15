@@ -14,7 +14,136 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      care_events: {
+        Row: {
+          created_at: string
+          event_date: string
+          event_type: string
+          id: string
+          notes: string | null
+          tree_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_date: string
+          event_type: string
+          id?: string
+          notes?: string | null
+          tree_id: string
+        }
+        Update: {
+          created_at?: string
+          event_date?: string
+          event_type?: string
+          id?: string
+          notes?: string | null
+          tree_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "care_events_tree_id_fkey"
+            columns: ["tree_id"]
+            isOneToOne: false
+            referencedRelation: "trees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tree_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          taken_on: string
+          tree_id: string
+          url: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          taken_on?: string
+          tree_id: string
+          url: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          taken_on?: string
+          tree_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tree_photos_tree_id_fkey"
+            columns: ["tree_id"]
+            isOneToOne: false
+            referencedRelation: "trees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trees: {
+        Row: {
+          acquired_on: string | null
+          cover_photo_url: string | null
+          created_at: string
+          fert_excluded_months: number[]
+          fert_frequency: string
+          id: string
+          name: string
+          next_fert_date: string | null
+          next_prune_date: string | null
+          next_repot_date: string | null
+          notes: string | null
+          prune_excluded_months: number[]
+          prune_frequency: string
+          repot_excluded_months: number[]
+          repot_frequency: string
+          species: string | null
+          updated_at: string
+        }
+        Insert: {
+          acquired_on?: string | null
+          cover_photo_url?: string | null
+          created_at?: string
+          fert_excluded_months?: number[]
+          fert_frequency?: string
+          id?: string
+          name: string
+          next_fert_date?: string | null
+          next_prune_date?: string | null
+          next_repot_date?: string | null
+          notes?: string | null
+          prune_excluded_months?: number[]
+          prune_frequency?: string
+          repot_excluded_months?: number[]
+          repot_frequency?: string
+          species?: string | null
+          updated_at?: string
+        }
+        Update: {
+          acquired_on?: string | null
+          cover_photo_url?: string | null
+          created_at?: string
+          fert_excluded_months?: number[]
+          fert_frequency?: string
+          id?: string
+          name?: string
+          next_fert_date?: string | null
+          next_prune_date?: string | null
+          next_repot_date?: string | null
+          notes?: string | null
+          prune_excluded_months?: number[]
+          prune_frequency?: string
+          repot_excluded_months?: number[]
+          repot_frequency?: string
+          species?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
