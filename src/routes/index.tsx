@@ -81,12 +81,123 @@ function Index() {
       ) : trees.length === 0 ? (
         <EmptyState onAdd={() => setOpen(true)} />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {trees.map((t) => (
-            <TreeCard key={t.id} tree={t} />
-          ))}
-        </div>
+        <>
+          <RemindersPanel trees={trees} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trees.map((t) => (
+              <TreeCard key={t.id} tree={t} />
+            ))}
+          </div>
+        </>
       )}
+    </div>
+  );
+}
+
+type ReminderItem = {
+  tree: Tree;
+  label: "Fertilize" | "Prune" | "Repot";
+  Icon: typeof Leaf;
+  date: string;
+  days: number;
+};
+
+function RemindersPanel({ trees }: { trees: Tree[] }) {
+  const items: ReminderItem[] = [];
+  for (const t of trees) {
+    const rows = [
+      { label: "Fertilize" as const, date: t.next_fert_date, Icon: Leaf },
+      { label: "Prune" as const, date: t.next_prune_date, Icon: Scissors },
+      { label: "Repot" as const, date: t.next_repot_date, Icon: FlowerIcon },
+    ];
+    for (const r of rows) {
+      const d = daysUntil(r.date);
+      if (r.date && d !== null && d <= 30) {
+        items.push({ tree: t, label: r.label, Icon: r.Icon, date: r.date, days: d });
+      }
+    }
+  }
+  items.sort((a, b) => a.days - b.days);
+
+  const overdue = items.filter((i) => i.days < 0);
+  const dueToday = items.filter((i) => i.days === 0);
+  const upcoming = items.filter((i) => i.days > 0);
+
+  if (items.length === 0) {
+    return (
+      <div className="mb-8 border border-border rounded-lg bg-card p-5 flex items-center gap-3">
+        <Bell className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">
+          Nothing due in the next 30 days. All trees are resting easy.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-8 border border-border rounded-lg bg-card overflow-hidden">
+      <div className="px-5 py-4 border-b border-border/60 flex items-center gap-2">
+        <Bell className="w-4 h-4" />
+        <h2 className="font-display text-2xl">Reminders</h2>
+        <span className="text-xs text-muted-foreground ml-2">
+          {overdue.length > 0 && `${overdue.length} overdue · `}
+          {dueToday.length > 0 && `${dueToday.length} due today · `}
+          {upcoming.length} upcoming
+        </span>
+      </div>
+      <ul className="divide-y divide-border/60">
+        {items.slice(0, 12).map((i, idx) => {
+          const overdueItem = i.days < 0;
+          const today = i.days === 0;
+          const soon = i.days > 0 && i.days <= 7;
+          const relative = overdueItem
+            ? `${Math.abs(i.days)}d overdue`
+            : today
+              ? "Due today"
+              : `in ${i.days}d`;
+          return (
+            <li key={idx}>
+              <Link
+                to="/trees/$id"
+                params={{ id: i.tree.id }}
+                className="flex items-center gap-3 px-5 py-3 hover:bg-muted/50 transition-colors"
+              >
+                <i.Icon
+                  className={`w-4 h-4 shrink-0 ${
+                    overdueItem
+                      ? "text-destructive"
+                      : today || soon
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                  }`}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm truncate">
+                    <span className="font-medium">{i.label}</span>
+                    <span className="text-muted-foreground"> · {i.tree.name}</span>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div
+                    className={`text-sm font-medium ${
+                      overdueItem
+                        ? "text-destructive"
+                        : today || soon
+                          ? "text-primary"
+                          : "text-foreground"
+                    }`}
+                  >
+                    {relative}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {formatDate(i.date)}
+                  </div>
+                </div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
