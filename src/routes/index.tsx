@@ -60,7 +60,7 @@ function Index() {
       <div className="flex items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="font-display text-5xl md:text-6xl leading-none">
-            Your collection
+            My collection
           </h1>
           <p className="mt-3 text-muted-foreground max-w-lg">
             Every tree, every trim, every repotting — kept in one calm place.
