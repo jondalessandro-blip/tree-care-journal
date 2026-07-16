@@ -69,23 +69,37 @@ function Index() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
       <Toaster richColors position="top-center" />
-      <div className="flex items-end justify-between gap-4 mb-8">
-        <div>
-          <h1 className="font-display text-5xl md:text-6xl leading-none">
-            My collection
-          </h1>
-          <p className="mt-3 text-muted-foreground max-w-lg">
-            Every tree, every trim, every repotting — kept in one calm place.
-          </p>
+      <div className="flex flex-col gap-6 mb-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-5xl md:text-6xl leading-none">
+              My collection
+            </h1>
+            <p className="mt-3 text-muted-foreground max-w-lg">
+              Every tree, every trim, every repotting — kept in one calm place.
+            </p>
+          </div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="shrink-0">
+                <Plus className="w-4 h-4" /> New tree
+              </Button>
+            </DialogTrigger>
+            <NewTreeDialog onDone={() => setOpen(false)} />
+          </Dialog>
         </div>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg" className="shrink-0">
-              <Plus className="w-4 h-4" /> New tree
-            </Button>
-          </DialogTrigger>
-          <NewTreeDialog onDone={() => setOpen(false)} />
-        </Dialog>
+
+        {trees.length > 0 && (
+          <div className="max-w-md">
+            <Input
+              type="search"
+              placeholder="Search by name, species, or notes…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="bg-background"
+            />
+          </div>
+        )}
       </div>
 
       {isLoading ? (
@@ -94,12 +108,17 @@ function Index() {
         <EmptyState onAdd={() => setOpen(true)} />
       ) : (
         <>
-          <RemindersPanel trees={trees} />
+          <RemindersPanel trees={filtered} />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trees.map((t) => (
+            {filtered.map((t) => (
               <TreeCard key={t.id} tree={t} />
             ))}
           </div>
+          {filtered.length === 0 && query.trim() && (
+            <p className="text-sm text-muted-foreground">
+              No trees match “{query.trim()}”.
+            </p>
+          )}
         </>
       )}
     </div>
