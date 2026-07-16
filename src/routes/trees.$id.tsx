@@ -348,6 +348,53 @@ function TreeDetail() {
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
                   {formatDate(p.taken_on)}
                 </figcaption>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
+                      aria-label="Delete photo"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this photo?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will remove the photo from this tree's progression.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await supabase.storage.from("bonsai").remove([p.url]);
+                            const { error } = await supabase
+                              .from("tree_photos")
+                              .delete()
+                              .eq("id", p.id);
+                            if (error) throw error;
+                            if (tree.cover_photo_url === p.url) {
+                              await supabase
+                                .from("trees")
+                                .update({ cover_photo_url: null })
+                                .eq("id", tree.id);
+                            }
+                            qc.invalidateQueries({ queryKey: ["photos", tree.id] });
+                            qc.invalidateQueries({ queryKey: ["tree", tree.id] });
+                            qc.invalidateQueries({ queryKey: ["trees"] });
+                            toast.success("Photo deleted");
+                          } catch (e) {
+                            toast.error((e as Error).message);
+                          }
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </figure>
             ))}
           </div>
