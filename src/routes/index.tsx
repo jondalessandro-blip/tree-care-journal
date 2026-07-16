@@ -41,7 +41,7 @@ async function fetchTrees(): Promise<Tree[]> {
   const { data, error } = await supabase
     .from("trees")
     .select(
-      "id, name, species, acquired_on, cover_photo_url, next_fert_date, next_prune_date, next_repot_date",
+      "id, name, species, acquired_on, notes, cover_photo_url, next_fert_date, next_prune_date, next_repot_date",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
