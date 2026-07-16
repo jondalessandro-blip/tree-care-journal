@@ -53,6 +53,17 @@ function Index() {
     queryFn: fetchTrees,
   });
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const filtered = query.trim()
+    ? trees.filter((t) =>
+        [t.name, t.species, t.notes]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase()
+          .includes(query.toLowerCase().trim()),
+      )
+    : trees;
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
