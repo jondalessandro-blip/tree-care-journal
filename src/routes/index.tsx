@@ -30,6 +30,7 @@ type Tree = {
   name: string;
   species: string | null;
   acquired_on: string | null;
+  notes: string | null;
   cover_photo_url: string | null;
   next_fert_date: string | null;
   next_prune_date: string | null;
