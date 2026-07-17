@@ -9,15 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MobileRouteImport } from './routes/mobile'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TreesIdRouteImport } from './routes/trees.$id'
 
-const MobileRoute = MobileRouteImport.update({
-  id: '/mobile',
-  path: '/mobile',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,43 +25,32 @@ const TreesIdRoute = TreesIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/mobile': typeof MobileRoute
   '/trees/$id': typeof TreesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/mobile': typeof MobileRoute
   '/trees/$id': typeof TreesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/mobile': typeof MobileRoute
   '/trees/$id': typeof TreesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mobile' | '/trees/$id'
+  fullPaths: '/' | '/trees/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mobile' | '/trees/$id'
-  id: '__root__' | '/' | '/mobile' | '/trees/$id'
+  to: '/' | '/trees/$id'
+  id: '__root__' | '/' | '/trees/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MobileRoute: typeof MobileRoute
   TreesIdRoute: typeof TreesIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/mobile': {
-      id: '/mobile'
-      path: '/mobile'
-      fullPath: '/mobile'
-      preLoaderRoute: typeof MobileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -87,7 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MobileRoute: MobileRoute,
   TreesIdRoute: TreesIdRoute,
 }
 export const routeTree = rootRouteImport
