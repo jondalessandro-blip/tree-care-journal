@@ -79,14 +79,21 @@ function Index() {
               Every tree, every trim, every repotting — kept in one calm place.
             </p>
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button size="lg" className="shrink-0">
-                <Plus className="w-4 h-4" /> New tree
-              </Button>
-            </DialogTrigger>
-            <NewTreeDialog onDone={() => setOpen(false)} />
-          </Dialog>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="outline" size="icon" className="md:hidden" asChild>
+              <Link to="/mobile">
+                <Smartphone className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="shrink-0">
+                  <Plus className="w-4 h-4" /> New tree
+                </Button>
+              </DialogTrigger>
+              <NewTreeDialog onDone={() => setOpen(false)} />
+            </Dialog>
+          </div>
         </div>
 
         {trees.length > 0 && (
