@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { SignedImg } from "@/components/SignedImg";
+import { ZoomableImg } from "@/components/ZoomableImg";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import {
@@ -180,7 +180,7 @@ function TreeDetail() {
 
       <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_1.2fr] gap-8 mb-10">
         <div className="aspect-square rounded-lg overflow-hidden bg-muted border border-border">
-          <SignedImg
+          <ZoomableImg
             path={tree.cover_photo_url}
             alt={tree.name}
             className="w-full h-full object-cover"
@@ -340,12 +340,12 @@ function TreeDetail() {
                 key={p.id}
                 className="relative aspect-square rounded-md overflow-hidden bg-muted border border-border group"
               >
-                <SignedImg
+                <ZoomableImg
                   path={p.url}
                   alt={p.caption ?? ""}
                   className="w-full h-full object-cover"
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
                   {formatDate(p.taken_on)}
                 </figcaption>
                 <AlertDialog>
