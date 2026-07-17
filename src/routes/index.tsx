@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { formatDate, daysUntil, todayISO } from "@/lib/care";
 import { uploadPhoto } from "@/lib/storage";
-import { Plus, Leaf, Scissors, FlowerIcon, Bell } from "lucide-react";
+import { Plus, Leaf, Scissors, FlowerIcon, Bell, Smartphone } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
