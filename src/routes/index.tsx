@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ZoomableImg } from "@/components/ZoomableImg";
+import { SignedImg } from "@/components/SignedImg";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { formatDate, daysUntil, todayISO } from "@/lib/care";
@@ -255,7 +255,7 @@ function CompactTreeCard({ tree }: { tree: Tree }) {
       className="group flex flex-col"
     >
       <div className="aspect-square rounded-lg bg-card border border-border overflow-hidden">
-        <ZoomableImg
+        <SignedImg
           path={tree.cover_photo_url}
           alt={tree.name}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
