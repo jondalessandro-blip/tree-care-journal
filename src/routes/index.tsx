@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { formatDate, daysUntil, todayISO } from "@/lib/care";
 import { uploadPhoto } from "@/lib/storage";
-import { Plus, Leaf, Scissors, FlowerIcon, Bell, Smartphone } from "lucide-react";
+import { Plus, Leaf, Scissors, FlowerIcon, Bell } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -79,21 +79,14 @@ function Index() {
               Every tree, every trim, every repotting — kept in one calm place.
             </p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button variant="outline" size="icon" className="md:hidden" asChild>
-              <Link to="/mobile">
-                <Smartphone className="w-4 h-4" />
-              </Link>
-            </Button>
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button size="lg" className="shrink-0">
-                  <Plus className="w-4 h-4" /> New tree
-                </Button>
-              </DialogTrigger>
-              <NewTreeDialog onDone={() => setOpen(false)} />
-            </Dialog>
-          </div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="shrink-0">
+                <Plus className="w-4 h-4" /> New tree
+              </Button>
+            </DialogTrigger>
+            <NewTreeDialog onDone={() => setOpen(false)} />
+          </Dialog>
         </div>
 
         {trees.length > 0 && (
@@ -116,9 +109,9 @@ function Index() {
       ) : (
         <>
           <RemindersPanel trees={filtered} />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
             {filtered.map((t) => (
-              <TreeCard key={t.id} tree={t} />
+              <CompactTreeCard key={t.id} tree={t} />
             ))}
           </div>
           {filtered.length === 0 && query.trim() && (
@@ -254,67 +247,23 @@ function EmptyState({ onAdd }: { onAdd: () => void }) {
   );
 }
 
-function TreeCard({ tree }: { tree: Tree }) {
-  const next = [
-    { label: "Fertilize", date: tree.next_fert_date, Icon: Leaf },
-    { label: "Prune", date: tree.next_prune_date, Icon: Scissors },
-    { label: "Repot", date: tree.next_repot_date, Icon: FlowerIcon },
-  ];
+function CompactTreeCard({ tree }: { tree: Tree }) {
   return (
     <Link
       to="/trees/$id"
       params={{ id: tree.id }}
-      className="group block bg-card border border-border rounded-lg overflow-hidden hover:border-primary/60 transition-colors"
+      className="group flex flex-col"
     >
-      <div className="aspect-[4/3] bg-muted overflow-hidden">
+      <div className="aspect-square rounded-lg bg-card border border-border overflow-hidden">
         <SignedImg
           path={tree.cover_photo_url}
           alt={tree.name}
-          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
         />
       </div>
-      <div className="p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-display text-2xl truncate">{tree.name}</h3>
-          {tree.acquired_on && (
-            <span className="text-xs text-muted-foreground shrink-0">
-              since {new Date(tree.acquired_on).getFullYear()}
-            </span>
-          )}
-        </div>
-        {tree.species && (
-          <p className="text-sm italic text-muted-foreground">{tree.species}</p>
-        )}
-        <div className="mt-4 hairline pt-3 space-y-1.5">
-          {next.map(({ label, date, Icon }) => {
-            const d = daysUntil(date);
-            const overdue = d !== null && d < 0;
-            const soon = d !== null && d >= 0 && d <= 7;
-            return (
-              <div
-                key={label}
-                className="flex items-center justify-between text-sm"
-              >
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  <Icon className="w-3.5 h-3.5" />
-                  {label}
-                </span>
-                <span
-                  className={
-                    overdue
-                      ? "text-destructive font-medium"
-                      : soon
-                        ? "text-primary font-medium"
-                        : "text-foreground"
-                  }
-                >
-                  {formatDate(date)}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <span className="mt-1.5 text-sm truncate text-center font-medium">
+        {tree.name}
+      </span>
     </Link>
   );
 }
