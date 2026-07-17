@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { formatDate, daysUntil, todayISO } from "@/lib/care";
 import { uploadPhoto } from "@/lib/storage";
-import { Plus, Leaf, Scissors, FlowerIcon, Bell } from "lucide-react";
+import { Plus, Leaf, Scissors, FlowerIcon, Bell, Smartphone } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -79,14 +79,21 @@ function Index() {
               Every tree, every trim, every repotting — kept in one calm place.
             </p>
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button size="lg" className="shrink-0">
-                <Plus className="w-4 h-4" /> New tree
-              </Button>
-            </DialogTrigger>
-            <NewTreeDialog onDone={() => setOpen(false)} />
-          </Dialog>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="outline" size="icon" className="md:hidden" asChild>
+              <Link to="/mobile">
+                <Smartphone className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="shrink-0">
+                  <Plus className="w-4 h-4" /> New tree
+                </Button>
+              </DialogTrigger>
+              <NewTreeDialog onDone={() => setOpen(false)} />
+            </Dialog>
+          </div>
         </div>
 
         {trees.length > 0 && (
