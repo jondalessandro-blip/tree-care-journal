@@ -483,9 +483,12 @@ function LogEventDialog({
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              placeholder="Fertilizer type, cut details, soil mix…"
+              rows={4}
+              placeholder="Fertilizer type, cut details, soil mix… Markdown supported."
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Markdown supported — **bold**, *italics*, lists, links.
+            </p>
           </div>
           <p className="text-xs text-muted-foreground">
             Next {CARE_LABELS[type].toLowerCase()} will be scheduled automatically
