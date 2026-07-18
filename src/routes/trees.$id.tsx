@@ -302,9 +302,9 @@ function TreeDetail() {
                       </span>
                     </div>
                     {e.notes && (
-                      <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
-                        {e.notes}
-                      </p>
+                      <div className="mt-1 text-muted-foreground">
+                        <Markdown>{e.notes}</Markdown>
+                      </div>
                     )}
                   </div>
                   <button
