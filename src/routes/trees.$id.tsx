@@ -112,6 +112,7 @@ function TreeDetail() {
   const { id } = Route.useParams();
   const nav = useNavigate();
   const qc = useQueryClient();
+  const [photoView, setPhotoView] = useState<"crop" | "full">("crop");
 
   const { data: tree, isLoading } = useQuery({
     queryKey: ["tree", id],
