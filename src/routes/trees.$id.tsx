@@ -331,7 +331,39 @@ function TreeDetail() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-3xl">Progression</h2>
-          <AddPhotoDialog treeId={tree.id} />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-md border border-border overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setPhotoView("crop")}
+                className={
+                  "px-2.5 py-1.5 transition-colors " +
+                  (photoView === "crop"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-muted-foreground hover:text-foreground")
+                }
+                aria-label="Cropped thumbnails"
+                title="Cropped thumbnails"
+              >
+                <Grid2x2 className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setPhotoView("full")}
+                className={
+                  "px-2.5 py-1.5 transition-colors " +
+                  (photoView === "full"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-muted-foreground hover:text-foreground")
+                }
+                aria-label="Full size images"
+                title="Full size images"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
+            <AddPhotoDialog treeId={tree.id} />
+          </div>
         </div>
         {photos.length === 0 ? (
           <p className="text-sm text-muted-foreground italic">
@@ -342,12 +374,18 @@ function TreeDetail() {
             {photos.map((p) => (
               <figure
                 key={p.id}
-                className="relative aspect-square rounded-md overflow-hidden bg-muted border border-border group"
+                className={
+                  "relative rounded-md overflow-hidden bg-muted border border-border group " +
+                  (photoView === "crop" ? "aspect-square" : "aspect-auto")
+                }
               >
                 <SignedImg
                   path={p.url}
                   alt={p.caption ?? ""}
-                  className="w-full h-full object-cover"
+                  className={
+                    "w-full h-full " +
+                    (photoView === "crop" ? "object-cover" : "object-contain")
+                  }
                 />
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
                   {formatDate(p.taken_on)}
