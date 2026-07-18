@@ -37,6 +37,8 @@ import {
   Plus,
   Trash2,
   Camera,
+  Grid2x2,
+  Maximize2,
 } from "lucide-react";
 import {
   MONTHS,
