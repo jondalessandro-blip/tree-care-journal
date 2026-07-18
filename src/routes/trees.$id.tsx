@@ -198,9 +198,9 @@ function TreeDetail() {
             </p>
           )}
           {tree.notes && (
-            <p className="mt-4 text-sm leading-relaxed whitespace-pre-wrap">
-              {tree.notes}
-            </p>
+            <div className="mt-4">
+              <Markdown>{tree.notes}</Markdown>
+            </div>
           )}
           <div className="mt-auto pt-6 flex flex-wrap gap-2">
             <EditTreeDialog tree={tree} />
