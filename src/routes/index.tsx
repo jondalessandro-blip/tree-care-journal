@@ -359,9 +359,12 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
           <Textarea
             value={form.notes}
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
-            placeholder="Origin, styling, general condition…"
-            rows={3}
+            placeholder="Origin, styling, general condition… Markdown supported."
+            rows={5}
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            Markdown supported — **bold**, *italics*, # headings, - lists.
+          </p>
         </div>
         <div>
           <Label>Cover photo</Label>

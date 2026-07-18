@@ -26,6 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { SignedImg } from "@/components/SignedImg";
+import { Markdown } from "@/components/Markdown";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import {
@@ -197,9 +198,9 @@ function TreeDetail() {
             </p>
           )}
           {tree.notes && (
-            <p className="mt-4 text-sm leading-relaxed whitespace-pre-wrap">
-              {tree.notes}
-            </p>
+            <div className="mt-4">
+              <Markdown>{tree.notes}</Markdown>
+            </div>
           )}
           <div className="mt-auto pt-6 flex flex-wrap gap-2">
             <EditTreeDialog tree={tree} />
@@ -301,9 +302,9 @@ function TreeDetail() {
                       </span>
                     </div>
                     {e.notes && (
-                      <p className="text-sm text-muted-foreground mt-1 whitespace-pre-wrap">
-                        {e.notes}
-                      </p>
+                      <div className="mt-1 text-muted-foreground">
+                        <Markdown>{e.notes}</Markdown>
+                      </div>
                     )}
                   </div>
                   <button
@@ -482,9 +483,12 @@ function LogEventDialog({
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              placeholder="Fertilizer type, cut details, soil mix…"
+              rows={4}
+              placeholder="Fertilizer type, cut details, soil mix… Markdown supported."
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Markdown supported — **bold**, *italics*, lists, links.
+            </p>
           </div>
           <p className="text-xs text-muted-foreground">
             Next {CARE_LABELS[type].toLowerCase()} will be scheduled automatically
@@ -578,8 +582,12 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
             <Textarea
               value={f.notes ?? ""}
               onChange={(e) => setF({ ...f, notes: e.target.value })}
-              rows={3}
+              rows={6}
+              placeholder="Supports **bold**, *italics*, # headings, - lists, [links](url)…"
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Markdown supported — bold, italics, headings, lists, links.
+            </p>
           </div>
 
           {(
