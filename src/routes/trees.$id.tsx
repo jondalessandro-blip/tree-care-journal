@@ -579,8 +579,12 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
             <Textarea
               value={f.notes ?? ""}
               onChange={(e) => setF({ ...f, notes: e.target.value })}
-              rows={3}
+              rows={6}
+              placeholder="Supports **bold**, *italics*, # headings, - lists, [links](url)…"
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Markdown supported — bold, italics, headings, lists, links.
+            </p>
           </div>
 
           {(
