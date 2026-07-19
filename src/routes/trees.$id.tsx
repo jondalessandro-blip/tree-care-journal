@@ -335,28 +335,125 @@ function TreeDetail() {
             No photos yet. Add one every season to watch the tree evolve.
           </p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {photos.map((p) => (
-              <figure
-                key={p.id}
-                className="relative aspect-square rounded-md overflow-hidden bg-muted border border-border group"
+          <PhotoGallery
+            photos={photos}
+            coverUrl={tree.cover_photo_url}
+            treeId={tree.id}
+          />
+        )}
+      </section>
+    </div>
+  );
+}
+
+function PhotoGallery({
+  photos,
+  coverUrl,
+  treeId,
+}: {
+  photos: Photo[];
+  coverUrl: string | null;
+  treeId: string;
+}) {
+  const qc = useQueryClient();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const active = activeIndex !== null ? photos[activeIndex] : null;
+
+  async function deletePhoto(photo: Photo) {
+    try {
+      await supabase.storage.from("bonsai").remove([photo.url]);
+      const { error } = await supabase
+        .from("tree_photos")
+        .delete()
+        .eq("id", photo.id);
+      if (error) throw error;
+      if (coverUrl === photo.url) {
+        await supabase
+          .from("trees")
+          .update({ cover_photo_url: null })
+          .eq("id", treeId);
+      }
+      qc.invalidateQueries({ queryKey: ["photos", treeId] });
+      qc.invalidateQueries({ queryKey: ["tree", treeId] });
+      qc.invalidateQueries({ queryKey: ["trees"] });
+      toast.success("Photo deleted");
+      setActiveIndex(null);
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  }
+
+  return (
+    <>
+      <ul
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 list-none p-0"
+        aria-label="Photo progression"
+      >
+        {photos.map((photo, index) => (
+          <li key={photo.id}>
+            <figure className="m-0">
+              <button
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                className="group relative block w-full aspect-square rounded-md overflow-hidden bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                aria-label={`View photo from ${formatDate(photo.taken_on)}`}
               >
                 <SignedImg
-                  path={p.url}
-                  alt={p.caption ?? ""}
-                  className="w-full h-full object-cover"
+                  path={photo.url}
+                  alt={photo.caption ?? `Photo taken on ${formatDate(photo.taken_on)}`}
+                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                  {formatDate(p.taken_on)}
-                </figcaption>
+              </button>
+              <figcaption className="mt-2 flex items-baseline justify-between gap-2">
+                <time
+                  dateTime={photo.taken_on}
+                  className="text-sm text-foreground"
+                >
+                  {formatDate(photo.taken_on)}
+                </time>
+                {photo.caption && (
+                  <span className="text-xs text-muted-foreground truncate">
+                    {photo.caption}
+                  </span>
+                )}
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+
+      <Dialog
+        open={active !== null}
+        onOpenChange={(open) => !open && setActiveIndex(null)}
+      >
+        <DialogContent className="max-w-[95vw] sm:max-w-3xl lg:max-w-4xl p-0 overflow-hidden">
+          {active && (
+            <>
+              <DialogHeader className="px-5 pt-5 pb-3">
+                <DialogTitle className="font-display text-2xl">
+                  <time dateTime={active.taken_on}>
+                    {formatDate(active.taken_on)}
+                  </time>
+                </DialogTitle>
+                {active.caption && (
+                  <p className="text-sm text-muted-foreground">
+                    {active.caption}
+                  </p>
+                )}
+              </DialogHeader>
+              <div className="bg-black/80 flex items-center justify-center max-h-[75vh]">
+                <SignedImg
+                  path={active.url}
+                  alt={active.caption ?? `Photo taken on ${formatDate(active.taken_on)}`}
+                  className="max-h-[75vh] w-auto max-w-full object-contain"
+                />
+              </div>
+              <DialogFooter className="px-5 py-3">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button
-                      className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
-                      aria-label="Delete photo"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+                    <Button variant="ghost" size="sm" className="text-destructive">
+                      <Trash2 className="w-4 h-4" /> Delete photo
+                    </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -367,41 +464,18 @@ function TreeDetail() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={async () => {
-                          try {
-                            await supabase.storage.from("bonsai").remove([p.url]);
-                            const { error } = await supabase
-                              .from("tree_photos")
-                              .delete()
-                              .eq("id", p.id);
-                            if (error) throw error;
-                            if (tree.cover_photo_url === p.url) {
-                              await supabase
-                                .from("trees")
-                                .update({ cover_photo_url: null })
-                                .eq("id", tree.id);
-                            }
-                            qc.invalidateQueries({ queryKey: ["photos", tree.id] });
-                            qc.invalidateQueries({ queryKey: ["tree", tree.id] });
-                            qc.invalidateQueries({ queryKey: ["trees"] });
-                            toast.success("Photo deleted");
-                          } catch (e) {
-                            toast.error((e as Error).message);
-                          }
-                        }}
-                      >
+                      <AlertDialogAction onClick={() => deletePhoto(active)}>
                         Delete
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-              </figure>
-            ))}
-          </div>
-        )}
-      </section>
-    </div>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
