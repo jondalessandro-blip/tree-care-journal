@@ -15,6 +15,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SignedImg } from "@/components/SignedImg";
+import { TagChip, TagPicker } from "@/components/TagChip";
+import {
+  CLIMATES,
+  FOLIAGES,
+  STYLES,
+  TAGS,
+  climateLabel,
+  foliageLabel,
+} from "@/lib/taxonomy";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { formatDate, daysUntil, todayISO } from "@/lib/care";
