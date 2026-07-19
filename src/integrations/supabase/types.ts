@@ -87,10 +87,12 @@ export type Database = {
       trees: {
         Row: {
           acquired_on: string | null
+          climate: string | null
           cover_photo_url: string | null
           created_at: string
           fert_excluded_months: number[]
           fert_frequency: string
+          foliage: string | null
           id: string
           name: string
           next_fert_date: string | null
@@ -102,14 +104,18 @@ export type Database = {
           repot_excluded_months: number[]
           repot_frequency: string
           species: string | null
+          style: string | null
+          tags: string[]
           updated_at: string
         }
         Insert: {
           acquired_on?: string | null
+          climate?: string | null
           cover_photo_url?: string | null
           created_at?: string
           fert_excluded_months?: number[]
           fert_frequency?: string
+          foliage?: string | null
           id?: string
           name: string
           next_fert_date?: string | null
@@ -121,14 +127,18 @@ export type Database = {
           repot_excluded_months?: number[]
           repot_frequency?: string
           species?: string | null
+          style?: string | null
+          tags?: string[]
           updated_at?: string
         }
         Update: {
           acquired_on?: string | null
+          climate?: string | null
           cover_photo_url?: string | null
           created_at?: string
           fert_excluded_months?: number[]
           fert_frequency?: string
+          foliage?: string | null
           id?: string
           name?: string
           next_fert_date?: string | null
@@ -140,6 +150,8 @@ export type Database = {
           repot_excluded_months?: number[]
           repot_frequency?: string
           species?: string | null
+          style?: string | null
+          tags?: string[]
           updated_at?: string
         }
         Relationships: []

@@ -27,6 +27,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { SignedImg } from "@/components/SignedImg";
 import { Markdown } from "@/components/Markdown";
+import { TagChip, TagPicker } from "@/components/TagChip";
+import {
+  CLIMATES,
+  FOLIAGES,
+  STYLES,
+  climateLabel,
+  foliageLabel,
+} from "@/lib/taxonomy";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import {
@@ -60,6 +68,10 @@ type Tree = {
   acquired_on: string | null;
   notes: string | null;
   cover_photo_url: string | null;
+  climate: string | null;
+  foliage: string | null;
+  style: string | null;
+  tags: string[] | null;
   fert_frequency: Frequency;
   fert_excluded_months: number[];
   next_fert_date: string | null;
@@ -196,6 +208,31 @@ function TreeDetail() {
             <p className="text-sm text-muted-foreground mt-2">
               Acquired {formatDate(tree.acquired_on)}
             </p>
+          )}
+          <div className="mt-3 flex flex-wrap gap-1.5 text-xs text-muted-foreground">
+
+            {climateLabel(tree.climate) && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {climateLabel(tree.climate)}
+              </span>
+            )}
+            {foliageLabel(tree.foliage) && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {foliageLabel(tree.foliage)}
+              </span>
+            )}
+            {tree.style && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {tree.style}
+              </span>
+            )}
+          </div>
+          {tree.tags && tree.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {tree.tags.map((t) => (
+                <TagChip key={t} value={t} />
+              ))}
+            </div>
           )}
           {tree.notes && (
             <div className="mt-4">
@@ -593,6 +630,10 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
           species: f.species,
           acquired_on: f.acquired_on,
           notes: f.notes,
+          climate: f.climate,
+          foliage: f.foliage,
+          style: f.style,
+          tags: f.tags ?? [],
           fert_frequency: f.fert_frequency,
           fert_excluded_months: f.fert_excluded_months,
           prune_frequency: f.prune_frequency,
@@ -663,6 +704,91 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
               Markdown supported — bold, italics, headings, lists, links.
             </p>
           </div>
+
+          <div className="border border-border rounded-md p-4 bg-card space-y-4">
+            <div>
+              <Label>Hardiness & Climate</Label>
+              <div role="radiogroup" className="mt-2 grid gap-2">
+                {CLIMATES.map((c) => (
+                  <label
+                    key={c.value}
+                    className={
+                      "flex items-start gap-3 rounded-md border p-3 cursor-pointer text-sm " +
+                      (f.climate === c.value
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/40")
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="climate"
+                      value={c.value}
+                      checked={f.climate === c.value}
+                      onChange={() => setF({ ...f, climate: c.value })}
+                      className="mt-0.5"
+                    />
+                    <span className="flex-1">
+                      <span className="font-medium">
+                        {c.emoji} {c.label}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {c.hint}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label>Foliage & Growth Habit</Label>
+                <select
+                  className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={f.foliage ?? ""}
+                  onChange={(e) =>
+                    setF({ ...f, foliage: e.target.value || null })
+                  }
+                >
+                  <option value="">Choose…</option>
+                  {FOLIAGES.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label} — {o.hint}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>Style</Label>
+                <select
+                  className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={f.style ?? ""}
+                  onChange={(e) =>
+                    setF({ ...f, style: e.target.value || null })
+                  }
+                >
+                  <option value="">Choose…</option>
+                  {STYLES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <Label>Special Tags</Label>
+              <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                Optional — select any that apply.
+              </p>
+              <TagPicker
+                value={f.tags ?? []}
+                onChange={(next) => setF({ ...f, tags: next })}
+              />
+            </div>
+          </div>
+
 
           {(
             [
