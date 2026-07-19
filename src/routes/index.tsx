@@ -322,6 +322,55 @@ function CompactTreeCard({ tree }: { tree: Tree }) {
   );
 }
 
+function FilterRow({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (next: string) => void;
+  options: { value: string; label: string }[];
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-xs uppercase tracking-wide text-muted-foreground w-20 shrink-0">
+        {label}
+      </span>
+      <div className="flex flex-wrap gap-1.5">
+        <button
+          type="button"
+          onClick={() => onChange("all")}
+          className={
+            "text-xs rounded-full px-2.5 py-1 border transition-colors " +
+            (value === "all"
+              ? "bg-foreground text-background border-foreground"
+              : "bg-background border-border hover:border-primary/40")
+          }
+        >
+          All
+        </button>
+        {options.map((o) => (
+          <button
+            key={o.value}
+            type="button"
+            onClick={() => onChange(o.value)}
+            className={
+              "text-xs rounded-full px-2.5 py-1 border transition-colors " +
+              (value === o.value
+                ? "bg-foreground text-background border-foreground"
+                : "bg-background border-border hover:border-primary/40")
+            }
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const FREQS = ["weekly", "monthly", "annually"] as const;
 
 function NewTreeDialog({ onDone }: { onDone: () => void }) {
