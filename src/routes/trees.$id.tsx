@@ -705,6 +705,91 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
             </p>
           </div>
 
+          <div className="border border-border rounded-md p-4 bg-card space-y-4">
+            <div>
+              <Label>Hardiness & Climate</Label>
+              <div role="radiogroup" className="mt-2 grid gap-2">
+                {CLIMATES.map((c) => (
+                  <label
+                    key={c.value}
+                    className={
+                      "flex items-start gap-3 rounded-md border p-3 cursor-pointer text-sm " +
+                      (f.climate === c.value
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/40")
+                    }
+                  >
+                    <input
+                      type="radio"
+                      name="climate"
+                      value={c.value}
+                      checked={f.climate === c.value}
+                      onChange={() => setF({ ...f, climate: c.value })}
+                      className="mt-0.5"
+                    />
+                    <span className="flex-1">
+                      <span className="font-medium">
+                        {c.emoji} {c.label}
+                      </span>
+                      <span className="block text-xs text-muted-foreground">
+                        {c.hint}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label>Foliage & Growth Habit</Label>
+                <select
+                  className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={f.foliage ?? ""}
+                  onChange={(e) =>
+                    setF({ ...f, foliage: e.target.value || null })
+                  }
+                >
+                  <option value="">Choose…</option>
+                  {FOLIAGES.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label} — {o.hint}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>Style</Label>
+                <select
+                  className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  value={f.style ?? ""}
+                  onChange={(e) =>
+                    setF({ ...f, style: e.target.value || null })
+                  }
+                >
+                  <option value="">Choose…</option>
+                  {STYLES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <Label>Special Tags</Label>
+              <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                Optional — select any that apply.
+              </p>
+              <TagPicker
+                value={f.tags ?? []}
+                onChange={(next) => setF({ ...f, tags: next })}
+              />
+            </div>
+          </div>
+
+
           {(
             [
               ["fertilize", "fert_frequency", "fert_excluded_months"],
