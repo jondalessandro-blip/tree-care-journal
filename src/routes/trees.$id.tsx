@@ -27,6 +27,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { SignedImg } from "@/components/SignedImg";
 import { Markdown } from "@/components/Markdown";
+import { TagChip, TagPicker } from "@/components/TagChip";
+import {
+  CLIMATES,
+  FOLIAGES,
+  STYLES,
+  climateLabel,
+  foliageLabel,
+} from "@/lib/taxonomy";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import {
