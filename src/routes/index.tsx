@@ -477,6 +477,87 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
             Markdown supported — **bold**, *italics*, # headings, - lists.
           </p>
         </div>
+
+        <div className="border border-border rounded-md p-4 bg-card space-y-4">
+          <div>
+            <Label>Hardiness & Climate</Label>
+            <div role="radiogroup" className="mt-2 grid gap-2">
+              {CLIMATES.map((c) => (
+                <label
+                  key={c.value}
+                  className={
+                    "flex items-start gap-3 rounded-md border p-3 cursor-pointer text-sm " +
+                    (form.climate === c.value
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/40")
+                  }
+                >
+                  <input
+                    type="radio"
+                    name="new-climate"
+                    value={c.value}
+                    checked={form.climate === c.value}
+                    onChange={() => setForm({ ...form, climate: c.value })}
+                    className="mt-0.5"
+                  />
+                  <span className="flex-1">
+                    <span className="font-medium">
+                      {c.emoji} {c.label}
+                    </span>
+                    <span className="block text-xs text-muted-foreground">
+                      {c.hint}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <Label>Foliage & Growth Habit</Label>
+              <select
+                className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                value={form.foliage}
+                onChange={(e) => setForm({ ...form, foliage: e.target.value })}
+              >
+                <option value="">Choose…</option>
+                {FOLIAGES.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label} — {o.hint}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <Label>Style</Label>
+              <select
+                className="mt-1 w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+                value={form.style}
+                onChange={(e) => setForm({ ...form, style: e.target.value })}
+              >
+                <option value="">Choose…</option>
+                {STYLES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <Label>Special Tags</Label>
+            <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+              Optional — select any that apply.
+            </p>
+            <TagPicker
+              value={form.tags}
+              onChange={(next) => setForm({ ...form, tags: next })}
+            />
+          </div>
+        </div>
+
         <div>
           <Label>Cover photo</Label>
           <Input
