@@ -68,6 +68,10 @@ type Tree = {
   acquired_on: string | null;
   notes: string | null;
   cover_photo_url: string | null;
+  climate: string | null;
+  foliage: string | null;
+  style: string | null;
+  tags: string[] | null;
   fert_frequency: Frequency;
   fert_excluded_months: number[];
   next_fert_date: string | null;
