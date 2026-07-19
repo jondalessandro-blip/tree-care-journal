@@ -208,6 +208,29 @@ function TreeDetail() {
             <p className="text-sm text-muted-foreground mt-2">
               Acquired {formatDate(tree.acquired_on)}
             </p>
+          <div className="mt-3 flex flex-wrap gap-1.5 text-xs text-muted-foreground">
+            {climateLabel(tree.climate) && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {climateLabel(tree.climate)}
+              </span>
+            )}
+            {foliageLabel(tree.foliage) && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {foliageLabel(tree.foliage)}
+              </span>
+            )}
+            {tree.style && (
+              <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
+                {tree.style}
+              </span>
+            )}
+          </div>
+          {tree.tags && tree.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {tree.tags.map((t) => (
+                <TagChip key={t} value={t} />
+              ))}
+            </div>
           )}
           {tree.notes && (
             <div className="mt-4">
