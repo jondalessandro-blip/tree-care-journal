@@ -68,16 +68,30 @@ function Index() {
   });
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [climateFilter, setClimateFilter] = useState<string>("all");
+  const [foliageFilter, setFoliageFilter] = useState<string>("all");
+  const [tagFilter, setTagFilter] = useState<string>("all");
 
-  const filtered = query.trim()
-    ? trees.filter((t) =>
-        [t.name, t.species, t.notes]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase()
-          .includes(query.toLowerCase().trim()),
-      )
-    : trees;
+  const filtered = trees.filter((t) => {
+    if (query.trim()) {
+      const hay = [t.name, t.species, t.notes]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      if (!hay.includes(query.toLowerCase().trim())) return false;
+    }
+    if (climateFilter !== "all" && t.climate !== climateFilter) return false;
+    if (foliageFilter !== "all" && t.foliage !== foliageFilter) return false;
+    if (tagFilter !== "all" && !(t.tags ?? []).includes(tagFilter))
+      return false;
+    return true;
+  });
+
+  const hasActiveFilters =
+    climateFilter !== "all" ||
+    foliageFilter !== "all" ||
+    tagFilter !== "all" ||
+    query.trim() !== "";
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
@@ -103,14 +117,40 @@ function Index() {
         </div>
 
         {trees.length > 0 && (
-          <div className="max-w-md">
+          <div className="flex flex-col gap-3">
             <Input
               type="search"
               placeholder="Search by name, species, or notes…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="bg-background"
+              className="bg-background max-w-md"
             />
+            <div className="flex flex-col gap-2">
+              <FilterRow
+                label="Climate"
+                value={climateFilter}
+                onChange={setClimateFilter}
+                options={CLIMATES.map((c) => ({
+                  value: c.value,
+                  label: `${c.emoji} ${c.label}`,
+                }))}
+              />
+              <FilterRow
+                label="Foliage"
+                value={foliageFilter}
+                onChange={setFoliageFilter}
+                options={FOLIAGES.map((f) => ({
+                  value: f.value,
+                  label: f.label,
+                }))}
+              />
+              <FilterRow
+                label="Tag"
+                value={tagFilter}
+                onChange={setTagFilter}
+                options={TAGS.map((t) => ({ value: t.value, label: t.label }))}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -127,12 +167,13 @@ function Index() {
               <CompactTreeCard key={t.id} tree={t} />
             ))}
           </div>
-          {filtered.length === 0 && query.trim() && (
+          {filtered.length === 0 && hasActiveFilters && (
             <p className="text-sm text-muted-foreground">
-              No trees match “{query.trim()}”.
+              No trees match the current filters.
             </p>
           )}
         </>
+
       )}
     </div>
   );
