@@ -208,7 +208,9 @@ function TreeDetail() {
             <p className="text-sm text-muted-foreground mt-2">
               Acquired {formatDate(tree.acquired_on)}
             </p>
+          )}
           <div className="mt-3 flex flex-wrap gap-1.5 text-xs text-muted-foreground">
+
             {climateLabel(tree.climate) && (
               <span className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5">
                 {climateLabel(tree.climate)}
