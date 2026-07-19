@@ -41,6 +41,10 @@ type Tree = {
   acquired_on: string | null;
   notes: string | null;
   cover_photo_url: string | null;
+  climate: string | null;
+  foliage: string | null;
+  style: string | null;
+  tags: string[] | null;
   next_fert_date: string | null;
   next_prune_date: string | null;
   next_repot_date: string | null;
@@ -50,7 +54,7 @@ async function fetchTrees(): Promise<Tree[]> {
   const { data, error } = await supabase
     .from("trees")
     .select(
-      "id, name, species, acquired_on, notes, cover_photo_url, next_fert_date, next_prune_date, next_repot_date",
+      "id, name, species, acquired_on, notes, cover_photo_url, climate, foliage, style, tags, next_fert_date, next_prune_date, next_repot_date",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
