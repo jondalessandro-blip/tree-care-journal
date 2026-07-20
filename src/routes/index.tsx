@@ -580,6 +580,19 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
           </div>
         </div>
 
+        <div className="border border-border rounded-md p-4 bg-card">
+          <SoilSection
+            soilMixId={form.soil_mix_id}
+            ph={form.ph}
+            winterLocation={form.winter_location}
+            tags={form.tags}
+            onSoilChange={(id) => setForm({ ...form, soil_mix_id: id })}
+            onPhChange={(ph) => setForm({ ...form, ph })}
+            onWinterChange={(loc) => setForm({ ...form, winter_location: loc })}
+          />
+        </div>
+
+
         <div>
           <Label>Cover photo</Label>
           <Input
