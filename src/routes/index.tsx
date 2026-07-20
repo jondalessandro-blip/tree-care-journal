@@ -74,7 +74,7 @@ function Index() {
 
   const filtered = trees.filter((t) => {
     if (query.trim()) {
-      const hay = [t.name, t.species, t.notes]
+      const hay = [t.name, t.species]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();
@@ -120,7 +120,7 @@ function Index() {
           <div className="flex flex-col gap-3">
             <Input
               type="search"
-              placeholder="Search by name, species, or notes…"
+              placeholder="Search by name or species…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="bg-background max-w-md"
