@@ -974,3 +974,41 @@ function AddPhotoDialog({ treeId }: { treeId: string }) {
     </Dialog>
   );
 }
+
+function SoilSummary({ tree }: { tree: Tree }) {
+  const soil = getSoil(tree.soil_mix_id);
+  const winter = winterLocationLabel(tree.winter_location);
+  if (!soil && tree.ph == null && !winter) return null;
+
+  return (
+    <section className="mb-10">
+      <h2 className="font-display text-3xl mb-4">Soil & winter</h2>
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4">
+        {soil ? (
+          <SoilCard soil={soil} selected />
+        ) : (
+          <div className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">
+            No soil mix chosen yet. Use Edit details to pick one.
+          </div>
+        )}
+        <div className="rounded-lg border border-border bg-card p-4 flex flex-col gap-3 text-sm">
+          <div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">
+              Soil pH
+            </div>
+            <div className="font-mono text-2xl mt-1">
+              {tree.ph != null ? Number(tree.ph).toFixed(1) : "—"}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">
+              Winter location
+            </div>
+            <div className="mt-1">{winter ?? "—"}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
