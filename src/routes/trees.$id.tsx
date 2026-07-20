@@ -74,6 +74,9 @@ type Tree = {
   foliage: string | null;
   style: string | null;
   tags: string[] | null;
+  soil_mix_id: string | null;
+  ph: number | null;
+  winter_location: string | null;
   fert_frequency: Frequency;
   fert_excluded_months: number[];
   next_fert_date: string | null;
