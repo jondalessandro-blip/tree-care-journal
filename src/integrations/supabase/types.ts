@@ -99,14 +99,17 @@ export type Database = {
           next_prune_date: string | null
           next_repot_date: string | null
           notes: string | null
+          ph: number | null
           prune_excluded_months: number[]
           prune_frequency: string
           repot_excluded_months: number[]
           repot_frequency: string
+          soil_mix_id: string | null
           species: string | null
           style: string | null
           tags: string[]
           updated_at: string
+          winter_location: string | null
         }
         Insert: {
           acquired_on?: string | null
@@ -122,14 +125,17 @@ export type Database = {
           next_prune_date?: string | null
           next_repot_date?: string | null
           notes?: string | null
+          ph?: number | null
           prune_excluded_months?: number[]
           prune_frequency?: string
           repot_excluded_months?: number[]
           repot_frequency?: string
+          soil_mix_id?: string | null
           species?: string | null
           style?: string | null
           tags?: string[]
           updated_at?: string
+          winter_location?: string | null
         }
         Update: {
           acquired_on?: string | null
@@ -145,14 +151,17 @@ export type Database = {
           next_prune_date?: string | null
           next_repot_date?: string | null
           notes?: string | null
+          ph?: number | null
           prune_excluded_months?: number[]
           prune_frequency?: string
           repot_excluded_months?: number[]
           repot_frequency?: string
+          soil_mix_id?: string | null
           species?: string | null
           style?: string | null
           tags?: string[]
           updated_at?: string
+          winter_location?: string | null
         }
         Relationships: []
       }
