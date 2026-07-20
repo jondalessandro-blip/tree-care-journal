@@ -386,12 +386,29 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
     foliage: "" as string,
     style: "" as string,
     tags: [] as string[],
+    soil_mix_id: "semi-inorganic" as string,
+    ph: 6.5 as number,
+    winter_location: "" as string,
     fert_frequency: "monthly" as (typeof FREQS)[number],
     prune_frequency: "annually" as (typeof FREQS)[number],
     repot_frequency: "annually" as (typeof FREQS)[number],
   });
   const [file, setFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Auto-select soil when taxonomy changes.
+  useEffect(() => {
+    const id = computeDefaultSoil({
+      climate: form.climate,
+      foliage: form.foliage,
+      tags: form.tags,
+    });
+    setForm((prev) =>
+      prev.soil_mix_id === id ? prev : { ...prev, soil_mix_id: id },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.climate, form.foliage, form.tags.join(",")]);
+
 
   const create = useMutation({
     mutationFn: async () => {
