@@ -802,6 +802,20 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
             </div>
           </div>
 
+          <div className="border border-border rounded-md p-4 bg-card">
+            <SoilSection
+              soilMixId={f.soil_mix_id}
+              ph={f.ph}
+              winterLocation={f.winter_location}
+              tags={f.tags ?? []}
+              onSoilChange={(id) => setF({ ...f, soil_mix_id: id })}
+              onPhChange={(ph) => setF({ ...f, ph })}
+              onWinterChange={(loc) => setF({ ...f, winter_location: loc })}
+            />
+          </div>
+
+
+
 
           {(
             [
