@@ -1,0 +1,4 @@
+ALTER TABLE public.trees
+  ADD COLUMN IF NOT EXISTS soil_mix_id TEXT,
+  ADD COLUMN IF NOT EXISTS ph NUMERIC(3,1),
+  ADD COLUMN IF NOT EXISTS winter_location TEXT;

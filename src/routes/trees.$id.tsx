@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SoilSection, SoilCard } from "@/components/SoilSection";
+import { computeDefaultSoil, getSoil, winterLocationLabel } from "@/lib/soil";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -72,6 +74,9 @@ type Tree = {
   foliage: string | null;
   style: string | null;
   tags: string[] | null;
+  soil_mix_id: string | null;
+  ph: number | null;
+  winter_location: string | null;
   fert_frequency: Frequency;
   fert_excluded_months: number[];
   next_fert_date: string | null;
@@ -312,6 +317,11 @@ function TreeDetail() {
           })}
         </div>
       </section>
+
+      {/* Soil & winter */}
+      <SoilSummary tree={tree} />
+
+
 
       {/* Care log */}
       <section className="mb-10">
@@ -621,6 +631,17 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
   const [open, setOpen] = useState(false);
   const [f, setF] = useState(tree);
 
+  useEffect(() => {
+    const id = computeDefaultSoil({
+      climate: f.climate,
+      foliage: f.foliage,
+      tags: f.tags ?? [],
+    });
+    setF((prev) => (prev.soil_mix_id === id ? prev : { ...prev, soil_mix_id: id }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [f.climate, f.foliage, (f.tags ?? []).join(",")]);
+
+
   const save = useMutation({
     mutationFn: async () => {
       const { error } = await supabase
@@ -634,6 +655,9 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
           foliage: f.foliage,
           style: f.style,
           tags: f.tags ?? [],
+          soil_mix_id: f.soil_mix_id,
+          ph: f.ph,
+          winter_location: f.winter_location,
           fert_frequency: f.fert_frequency,
           fert_excluded_months: f.fert_excluded_months,
           prune_frequency: f.prune_frequency,
@@ -789,6 +813,20 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
             </div>
           </div>
 
+          <div className="border border-border rounded-md p-4 bg-card">
+            <SoilSection
+              soilMixId={f.soil_mix_id}
+              ph={f.ph}
+              winterLocation={f.winter_location}
+              tags={f.tags ?? []}
+              onSoilChange={(id) => setF({ ...f, soil_mix_id: id })}
+              onPhChange={(ph) => setF({ ...f, ph })}
+              onWinterChange={(loc) => setF({ ...f, winter_location: loc })}
+            />
+          </div>
+
+
+
 
           {(
             [
@@ -936,3 +974,41 @@ function AddPhotoDialog({ treeId }: { treeId: string }) {
     </Dialog>
   );
 }
+
+function SoilSummary({ tree }: { tree: Tree }) {
+  const soil = getSoil(tree.soil_mix_id);
+  const winter = winterLocationLabel(tree.winter_location);
+  if (!soil && tree.ph == null && !winter) return null;
+
+  return (
+    <section className="mb-10">
+      <h2 className="font-display text-3xl mb-4">Soil & winter</h2>
+      <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4">
+        {soil ? (
+          <SoilCard soil={soil} selected />
+        ) : (
+          <div className="rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">
+            No soil mix chosen yet. Use Edit details to pick one.
+          </div>
+        )}
+        <div className="rounded-lg border border-border bg-card p-4 flex flex-col gap-3 text-sm">
+          <div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">
+              Soil pH
+            </div>
+            <div className="font-mono text-2xl mt-1">
+              {tree.ph != null ? Number(tree.ph).toFixed(1) : "—"}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">
+              Winter location
+            </div>
+            <div className="mt-1">{winter ?? "—"}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+

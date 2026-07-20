@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SoilSection } from "@/components/SoilSection";
+import { computeDefaultSoil } from "@/lib/soil";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -384,12 +386,29 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
     foliage: "" as string,
     style: "" as string,
     tags: [] as string[],
+    soil_mix_id: "semi-inorganic" as string,
+    ph: 6.5 as number,
+    winter_location: "" as string,
     fert_frequency: "monthly" as (typeof FREQS)[number],
     prune_frequency: "annually" as (typeof FREQS)[number],
     repot_frequency: "annually" as (typeof FREQS)[number],
   });
   const [file, setFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Auto-select soil when taxonomy changes.
+  useEffect(() => {
+    const id = computeDefaultSoil({
+      climate: form.climate,
+      foliage: form.foliage,
+      tags: form.tags,
+    });
+    setForm((prev) =>
+      prev.soil_mix_id === id ? prev : { ...prev, soil_mix_id: id },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.climate, form.foliage, form.tags.join(",")]);
+
 
   const create = useMutation({
     mutationFn: async () => {
@@ -405,6 +424,9 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
           foliage: form.foliage || null,
           style: form.style || null,
           tags: form.tags,
+          soil_mix_id: form.soil_mix_id || null,
+          ph: form.ph,
+          winter_location: form.winter_location || null,
           fert_frequency: form.fert_frequency,
           prune_frequency: form.prune_frequency,
           repot_frequency: form.repot_frequency,
@@ -557,6 +579,19 @@ function NewTreeDialog({ onDone }: { onDone: () => void }) {
             />
           </div>
         </div>
+
+        <div className="border border-border rounded-md p-4 bg-card">
+          <SoilSection
+            soilMixId={form.soil_mix_id}
+            ph={form.ph}
+            winterLocation={form.winter_location}
+            tags={form.tags}
+            onSoilChange={(id) => setForm({ ...form, soil_mix_id: id })}
+            onPhChange={(ph) => setForm({ ...form, ph })}
+            onWinterChange={(loc) => setForm({ ...form, winter_location: loc })}
+          />
+        </div>
+
 
         <div>
           <Label>Cover photo</Label>
