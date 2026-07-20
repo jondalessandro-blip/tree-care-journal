@@ -318,6 +318,11 @@ function TreeDetail() {
         </div>
       </section>
 
+      {/* Soil & winter */}
+      <SoilSummary tree={tree} />
+
+
+
       {/* Care log */}
       <section className="mb-10">
         <h2 className="font-display text-3xl mb-4">Care log</h2>
