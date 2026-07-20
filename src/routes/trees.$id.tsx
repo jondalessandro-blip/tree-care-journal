@@ -631,6 +631,17 @@ function EditTreeDialog({ tree }: { tree: Tree }) {
   const [open, setOpen] = useState(false);
   const [f, setF] = useState(tree);
 
+  useEffect(() => {
+    const id = computeDefaultSoil({
+      climate: f.climate,
+      foliage: f.foliage,
+      tags: f.tags ?? [],
+    });
+    setF((prev) => (prev.soil_mix_id === id ? prev : { ...prev, soil_mix_id: id }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [f.climate, f.foliage, (f.tags ?? []).join(",")]);
+
+
   const save = useMutation({
     mutationFn: async () => {
       const { error } = await supabase
