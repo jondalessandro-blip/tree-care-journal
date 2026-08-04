@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BonsaiCalendar } from "@/components/BonsaiCalendar";
 import { useEffect, useState } from "react";
 import { SoilSection } from "@/components/SoilSection";
 import { computeDefaultSoil } from "@/lib/soil";
