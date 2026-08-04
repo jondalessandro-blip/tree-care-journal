@@ -1,0 +1,114 @@
+[
+  {
+    "id": "3a",
+    "label": "3a",
+    "display": "Zone 3a (-40°C)",
+    "last_frost": "06-01",
+    "first_frost": "08-15",
+    "shift_weeks": 6
+  },
+  {
+    "id": "4a",
+    "label": "4a",
+    "display": "Zone 4a (-34°C)",
+    "last_frost": "05-15",
+    "first_frost": "09-10",
+    "shift_weeks": 4
+  },
+  {
+    "id": "4b",
+    "label": "4b",
+    "display": "Zone 4b (-31°C)",
+    "last_frost": "05-10",
+    "first_frost": "09-15",
+    "shift_weeks": 3
+  },
+  {
+    "id": "5a",
+    "label": "5a",
+    "display": "Zone 5a (-28°C)",
+    "last_frost": "05-05",
+    "first_frost": "09-25",
+    "shift_weeks": 1
+  },
+  {
+    "id": "5b",
+    "label": "5b",
+    "display": "Zone 5b (-26°C) - Baseline",
+    "last_frost": "05-15",
+    "first_frost": "09-30",
+    "shift_weeks": 0
+  },
+  {
+    "id": "6a",
+    "label": "6a",
+    "display": "Zone 6a (-23°C)",
+    "last_frost": "04-20",
+    "first_frost": "10-15",
+    "shift_weeks": -2
+  },
+  {
+    "id": "6b",
+    "label": "6b",
+    "display": "Zone 6b (-20°C)",
+    "last_frost": "04-10",
+    "first_frost": "10-20",
+    "shift_weeks": -3
+  },
+  {
+    "id": "7a",
+    "label": "7a",
+    "display": "Zone 7a (-17°C)",
+    "last_frost": "04-01",
+    "first_frost": "10-30",
+    "shift_weeks": -4
+  },
+  {
+    "id": "7b",
+    "label": "7b",
+    "display": "Zone 7b (-15°C)",
+    "last_frost": "03-20",
+    "first_frost": "11-10",
+    "shift_weeks": -5
+  },
+  {
+    "id": "8a",
+    "label": "8a",
+    "display": "Zone 8a (-12°C)",
+    "last_frost": "03-05",
+    "first_frost": "11-20",
+    "shift_weeks": -6
+  },
+  {
+    "id": "8b",
+    "label": "8b",
+    "display": "Zone 8b (-9°C)",
+    "last_frost": "02-20",
+    "first_frost": "11-30",
+    "shift_weeks": -7
+  },
+  {
+    "id": "9a",
+    "label": "9a",
+    "display": "Zone 9a (-6°C)",
+    "last_frost": "02-01",
+    "first_frost": "12-10",
+    "shift_weeks": -8
+  },
+  {
+    "id": "9b",
+    "label": "9b",
+    "display": "Zone 9b (-3°C)",
+    "last_frost": "01-15",
+    "first_frost": "12-20",
+    "shift_weeks": -9
+  },
+  {
+    "id": "10a",
+    "label": "10a",
+    "display": "Zone 10a (-1°C) - Tropical always out",
+    "last_frost": "01-01",
+    "first_frost": "12-30",
+    "shift_weeks": -10
+  }
+]

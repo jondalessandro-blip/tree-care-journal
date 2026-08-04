@@ -1,0 +1,248 @@
+[
+  {
+    "group_id": "hardy_deciduous",
+    "label": "Hardy Deciduous",
+    "examples": "Maple, Elm, Hornbeam, Beech, Oak, Zelkova, Apple, Crabapple, Larch",
+    "description": "Trees that drop leaves and need winter dormancy",
+    "icon": "🍁",
+    "tasks": [
+      {
+        "id": "hd_prune",
+        "title": "Structural Pruning",
+        "category": "pruning",
+        "base_month": 2,
+        "zone_shift": true,
+        "trigger": "dormant - bare branches",
+        "desc": "Best visibility. Remove crossing, co-dominant stems. Always cut to branch collar.",
+        "warning": "Japanese Maples bleed if pruned late - do early Feb."
+      },
+      {
+        "id": "hd_repot",
+        "title": "Repot",
+        "category": "repotting",
+        "base_month": 3,
+        "zone_shift": true,
+        "trigger": "bud swell",
+        "desc": "Repot as buds swell, before leaves open. Standard soil: 50% akadama, 25% pumice, 25% lava.",
+        "warning": "Beech max 20% root removal. Larch repot first - earliest to wake."
+      },
+      {
+        "id": "hd_pinch",
+        "title": "Clip & Grow / Pinch",
+        "category": "pruning",
+        "base_month": 5,
+        "zone_shift": true,
+        "trigger": "first flush hardened",
+        "desc": "Let shoot grow 5-6 leaves, cut back to 2. Builds fine ramification.",
+        "warning": ""
+      },
+      {
+        "id": "hd_defoliate",
+        "title": "Defoliation (Optional)",
+        "category": "pruning",
+        "base_month": 6,
+        "zone_shift": true,
+        "trigger": "strong healthy tree only",
+        "desc": "Strong trees only: remove large outer leaves to force smaller second flush. Partial for Japanese Maple.",
+        "warning": "Never defoliate weak tree. Never after mid-July."
+      },
+      {
+        "id": "hd_fert",
+        "title": "Fertilize",
+        "category": "fertilizer",
+        "base_month": 5,
+        "zone_shift": true,
+        "trigger": "after leaf harden",
+        "desc": "Start organic fertilizer after first leaves harden. Every 2 weeks until mid-Aug.",
+        "warning": "Stop nitrogen mid-Aug to harden for winter."
+      },
+      {
+        "id": "hd_winter",
+        "title": "Winter Storage",
+        "category": "protection",
+        "base_month": 11,
+        "zone_shift": false,
+        "trigger": "after leaf drop + first frost",
+        "desc": "Store at 0-4C: unheated garage/shed. Mulch pot, protect from wind/sun.",
+        "warning": "Needs 800+ chill hours. Never bring indoors to house."
+      }
+    ],
+    "species_notes": {
+      "Japanese Maple": "Partial defoliation only",
+      "Beech": "Hates heavy root work",
+      "Larch": "First to need repot in spring",
+      "Oak": "Prune late winter to reduce bleeding"
+    }
+  },
+  {
+    "group_id": "conifer_two_flush",
+    "label": "Conifer - Two-Flush Pines",
+    "examples": "Japanese Black Pine, Red Pine",
+    "description": "Pines that grow twice a year - CRITICAL different care",
+    "icon": "🌲",
+    "tasks": [
+      {
+        "id": "c2_repot",
+        "title": "Repot",
+        "category": "repotting",
+        "base_month": 3,
+        "zone_shift": true,
+        "trigger": "bud swell",
+        "desc": "Repot as buds move. Keep 30% old soil for mycorrhizae (white fungus).",
+        "warning": "Never bare root. Needs mycorrhizae to live."
+      },
+      {
+        "id": "c2_candle",
+        "title": "CANDLE CUTTING - Key Task",
+        "category": "pruning",
+        "base_month": 6,
+        "zone_shift": true,
+        "trigger": "candles extended, needles not open",
+        "desc": "Cut strong candles short (1/3 left), medium half, weak leave alone. Balances energy.",
+        "warning": "TIMING CRITICAL. Too early/late = no second flush."
+      },
+      {
+        "id": "c2_needle",
+        "title": "Old Needle Pull",
+        "category": "pruning",
+        "base_month": 7,
+        "zone_shift": true,
+        "trigger": "after second flush",
+        "desc": "Pull last year's old needles to let light/air inside.",
+        "warning": ""
+      },
+      {
+        "id": "c2_fert",
+        "title": "Fertilize Heavy",
+        "category": "fertilizer",
+        "base_month": 4,
+        "zone_shift": true,
+        "trigger": "spring before cut",
+        "desc": "Heavy spring feed to build strength. Stop 2 weeks before candle cut, resume 2 weeks after.",
+        "warning": ""
+      }
+    ],
+    "species_notes": {
+      "Black Pine": "Most common two-flush",
+      "Red Pine": "Same as Black Pine"
+    }
+  },
+  {
+    "group_id": "conifer_one_flush",
+    "label": "Hardy Evergreen Conifers",
+    "examples": "White Pine, Scots Pine, Mugo Pine, Spruce, Juniper, Cedar",
+    "description": "One growth flush per year - do NOT candle cut",
+    "icon": "🌿",
+    "tasks": [
+      {
+        "id": "c1_repot",
+        "title": "Repot",
+        "category": "repotting",
+        "base_month": 4,
+        "zone_shift": true,
+        "trigger": "early spring bud swell",
+        "desc": "Repot early-mid spring. Gentle root work. Juniper repot late March-April.",
+        "warning": "Juniper never bare root all at once."
+      },
+      {
+        "id": "c1_prune",
+        "title": "Prune to Shape",
+        "category": "pruning",
+        "base_month": 6,
+        "zone_shift": true,
+        "trigger": "after new growth hardens",
+        "desc": "For White/Scots/Mugo: AFTER needles harden late June/July, cut back to side buds. For Juniper: pinch tips to balance.",
+        "warning": "Do NOT candle cut like Black Pine - will kill bud."
+      },
+      {
+        "id": "c1_bud",
+        "title": "Bud Selection",
+        "category": "pruning",
+        "base_month": 8,
+        "zone_shift": true,
+        "trigger": "late summer",
+        "desc": "At each whorl, remove extra buds leaving 2 sideways. Prevents ugly whorls. For Juniper: thin dense pads for light.",
+        "warning": ""
+      },
+      {
+        "id": "c1_winter",
+        "title": "Winter Protection",
+        "category": "protection",
+        "base_month": 11,
+        "zone_shift": false,
+        "trigger": "after few frosts",
+        "desc": "Needs cold dormancy but protect pot. Bury pot in mulch, windbreak, out of winter sun. NEVER indoors.",
+        "warning": "Number 1 killer of Juniper is keeping indoors in winter."
+      }
+    ],
+    "species_notes": {
+      "White Pine": "One-flush, no candle cut",
+      "Mugo Pine": "One-flush, prune after harden",
+      "Juniper": "Energy in foliage - never strip all tips"
+    }
+  },
+  {
+    "group_id": "tropical",
+    "label": "Tropical / Subtropical",
+    "examples": "Ficus, Jade, Brazilian Raintree, Fukien Tea, Serissa, Bougainvillea",
+    "description": "No dormancy, needs warmth. Indoors in winter for cold zones",
+    "icon": "🌴",
+    "tasks": [
+      {
+        "id": "t_out",
+        "title": "Move Outdoors",
+        "category": "protection",
+        "base_month": 5,
+        "zone_shift": false,
+        "trigger": "last_frost + 7-14 days, nights >12C",
+        "desc": "Move outside after last frost. Ficus needs >12C nights, others >15C. Acclimate to sun over 7 days.",
+        "warning": "Direct sun after indoor winter burns leaves - shade first."
+      },
+      {
+        "id": "t_prune",
+        "title": "Heavy Prune & Style",
+        "category": "pruning",
+        "base_month": 6,
+        "zone_shift": false,
+        "trigger": "hottest months outdoors",
+        "desc": "Hard prune, full defoliation okay for Ficus if healthy. This is when you build structure.",
+        "warning": ""
+      },
+      {
+        "id": "t_repot",
+        "title": "Repot Tropicals",
+        "category": "repotting",
+        "base_month": 7,
+        "zone_shift": false,
+        "trigger": "July heat - strongest",
+        "desc": "Repot in July when hottest and growing fastest. Opposite of hardy trees. Ficus can be bare rooted.",
+        "warning": "Serissa only 20% root prune, hates heavy work."
+      },
+      {
+        "id": "t_in",
+        "title": "Move Indoors",
+        "category": "protection",
+        "base_month": 9,
+        "zone_shift": false,
+        "trigger": "first_frost - 21 days, nights <12C",
+        "desc": "Bring indoors under grow lights 14-16hr, humidity tray, 18-22C. Check for spider mites first.",
+        "warning": "Spray with insecticidal soap before bringing in."
+      },
+      {
+        "id": "t_winter",
+        "title": "Indoor Winter Care",
+        "category": "watering",
+        "base_month": 12,
+        "zone_shift": false,
+        "trigger": "indoors under lights",
+        "desc": "Maintenance only. Water when slightly dry. Light pinch. No heavy work. Leggy growth = needs more light.",
+        "warning": "Don't try to build ramification indoors - just keep alive."
+      }
+    ],
+    "species_notes": {
+      "Ficus": "Can take hard prune and bare root",
+      "Serissa": "Light root work only",
+      "Raintree": "Leaves close at night - normal, not dying"
+    }
+  }
+]

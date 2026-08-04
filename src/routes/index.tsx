@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BonsaiCalendar } from "@/components/BonsaiCalendar";
 import { useEffect, useState } from "react";
 import { SoilSection } from "@/components/SoilSection";
 import { computeDefaultSoil } from "@/lib/soil";
@@ -177,6 +178,15 @@ function Index() {
         </>
 
       )}
+
+      <section className="mt-14 border-t border-border pt-10">
+        <h2 className="font-display text-4xl">Seasonal calendar</h2>
+        <p className="mt-2 mb-6 text-muted-foreground max-w-lg">
+          Build a year of work tuned to your climate zone and the kinds of trees
+          you keep.
+        </p>
+        <BonsaiCalendar />
+      </section>
     </div>
   );
 }
