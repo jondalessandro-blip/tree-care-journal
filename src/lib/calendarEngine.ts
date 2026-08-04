@@ -45,7 +45,7 @@ export type CalendarMonth = {
 };
 
 export const ZONES = zones as Zone[];
-export const GROUPS = groups as Group[];
+export const GROUPS = groups as unknown as Group[];
 
 export const MONTH_NAMES = [
   "January",
