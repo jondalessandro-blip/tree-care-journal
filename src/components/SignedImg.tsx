@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
-import { getSignedUrl } from "@/lib/storage";
+import { getSignedUrl, type ImageTransform } from "@/lib/storage";
 
 export function SignedImg({
   path,
   alt,
   className,
+  transform,
 }: {
   path: string | null | undefined;
   alt: string;
   className?: string;
+  /** Optional server-side downscale — use for thumbnails/grids. */
+  transform?: ImageTransform;
 }) {
   const [url, setUrl] = useState<string>("");
+  const transformKey = transform
+    ? `${transform.width ?? ""}x${transform.height ?? ""}q${transform.quality ?? ""}`
+    : "";
   useEffect(() => {
     let cancelled = false;
     if (!path) {
       setUrl("");
       return;
     }
-    getSignedUrl(path)
+    getSignedUrl(path, transform)
       .then((u) => {
         if (!cancelled) setUrl(u);
       })
@@ -27,7 +33,8 @@ export function SignedImg({
     return () => {
       cancelled = true;
     };
-  }, [path]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path, transformKey]);
 
   if (!path) {
     return (
@@ -41,5 +48,16 @@ export function SignedImg({
   if (!url) {
     return <div className={`bg-muted animate-pulse ${className ?? ""}`} />;
   }
-  return <img src={url} alt={alt} className={className} loading="lazy" />;
+  return (
+    <img
+      src={url}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      decoding="async"
+      width={transform?.width}
+      height={transform?.height ?? transform?.width}
+    />
+  );
 }
+
