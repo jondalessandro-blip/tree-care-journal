@@ -156,7 +156,13 @@ export function BonsaiCalendar() {
         <Button
           size="lg"
           disabled={groupIds.length === 0}
-          onClick={() => setCalendar(generateCalendar(zoneId, groupIds))}
+          onClick={() => {
+            const zone = ZONES.find((z) => z.id === zoneId) ?? ZONES[0];
+            const selectedGroups = GROUPS.filter((g) =>
+              groupIds.includes(g.group_id),
+            );
+            setCalendar(generateCalendar(zone, selectedGroups));
+          }}
         >
           Generate My Calendar
         </Button>
