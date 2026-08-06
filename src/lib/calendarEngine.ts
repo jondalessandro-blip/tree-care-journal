@@ -10,7 +10,7 @@ export type Zone = {
   shift_weeks: number;
 };
 
-export type GroupTask = {
+export type Task = {
   id: string;
   title: string;
   category: string;
@@ -19,19 +19,20 @@ export type GroupTask = {
   trigger: string;
   desc: string;
   warning?: string;
+  group_id?: string;
+  group_label?: string;
 };
 
 export type Group = {
   group_id: string;
   label: string;
   examples: string;
-  description: string;
   icon: string;
-  tasks: GroupTask[];
-  species_notes?: Record<string, string>;
+  tasks: Task[];
+  species_notes?: any;
 };
 
-export type CalendarTask = GroupTask & {
+export type CalendarTask = Task & {
   group_id: string;
   group_label: string;
   icon: string;
@@ -47,58 +48,51 @@ export type CalendarMonth = {
 export const ZONES = zones as Zone[];
 export const GROUPS = groups as unknown as Group[];
 
-export const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-/** Shift a base month by a zone's week offset (later in cold zones, earlier in warm). */
 function shiftMonth(baseMonth: number, shiftWeeks: number): number {
-  const shiftedIndex = Math.round((baseMonth - 1) * 4.345 + shiftWeeks) / 4.345;
-  let month = Math.round(shiftedIndex) + 1;
-  while (month < 1) month += 12;
-  while (month > 12) month -= 12;
-  return month;
+  const shifted = baseMonth + shiftWeeks / 4.3;
+  let m = Math.round(shifted);
+  if (m < 1) m = 1;
+  if (m > 12) m = 12;
+  return m;
 }
 
 export function generateCalendar(
-  zoneId: string,
-  selectedGroupIds: string[],
+  zone: Zone,
+  selectedGroups: Group[],
 ): CalendarMonth[] {
-  const zone = ZONES.find((z) => z.id === zoneId) ?? ZONES[0];
-  const months: CalendarMonth[] = MONTH_NAMES.map((monthName, index) => ({
-    month: index + 1,
-    monthName,
-    tasks: [],
+  const months = Array.from({ length: 12 }, (_, i) => ({
+    month: i + 1,
+    monthName: new Date(0, i).toLocaleString("en", { month: "long" }),
+    tasks: [] as CalendarTask[],
   }));
 
-  for (const group of GROUPS) {
-    if (!selectedGroupIds.includes(group.group_id)) continue;
-    for (const task of group.tasks) {
-      const month = task.zone_shift
-        ? shiftMonth(task.base_month, zone.shift_weeks)
-        : task.base_month;
-      const bucket = months[month - 1];
-      if (!bucket) continue;
-      bucket.tasks.push({
+  selectedGroups.forEach((group) => {
+    group.tasks.forEach((task) => {
+      let targetMonth = task.base_month;
+      if (task.zone_shift) {
+        targetMonth = shiftMonth(task.base_month, zone.shift_weeks);
+      } else {
+        if (task.id === "t_out") {
+          const [m] = zone.last_frost.split("-").map(Number);
+          targetMonth = m;
+          if (zone.shift_weeks < -6) targetMonth = m;
+        }
+        if (task.id === "t_in") {
+          const [m] = zone.first_frost.split("-").map(Number);
+          targetMonth = m - 1;
+          if (targetMonth < 1) targetMonth = 9;
+        }
+      }
+      const enriched: CalendarTask = {
         ...task,
         group_id: group.group_id,
         group_label: group.label,
         icon: group.icon,
-        month,
-      });
-    }
-  }
+        month: targetMonth,
+      };
+      months[targetMonth - 1].tasks.push(enriched);
+    });
+  });
 
   return months;
 }
