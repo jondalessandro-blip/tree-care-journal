@@ -324,8 +324,10 @@ function CompactTreeCard({ tree }: { tree: Tree }) {
         <SignedImg
           path={tree.cover_photo_url}
           alt={tree.name}
+          transform={{ width: 320, height: 320, quality: 65 }}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
         />
+
       </div>
       <span className="mt-1.5 text-sm truncate text-center font-medium">
         {tree.name}
