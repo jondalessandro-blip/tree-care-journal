@@ -3,6 +3,8 @@ import groups from "@/data/groups.json";
 
 export type Zone = {
   id: string;
+  label: string;
+  display: string;
   last_frost: string;
   first_frost: string;
   shift_weeks: number;
